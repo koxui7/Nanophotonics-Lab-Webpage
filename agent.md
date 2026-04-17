@@ -2,21 +2,35 @@
 
 ## Purpose
 
-This repo uses Codex as the controller inside a single workspace. Work may be split
-across sub-agents, but durable outputs must be written back into this repository.
+This repository is intended to be maintainable by future contributors using agent workflows, not only by the original rebuild author.
 
-## Core Rules
+## Durable Artifact Rules
 
-- do not treat chat alone as the source of truth for durable decisions
-- write research notes into `docs/research/`
-- write approved designs into `docs/specs/`
-- write execution plans into `docs/plans/`
-- write reviews, checks, and validation notes into `docs/reviews/`
-- prefer spec-first and plan-first execution
-- do not choose the frontend stack until discovery on the existing site is done
+- do not treat chat alone as the source of truth
+- keep research notes in `docs/research/`
+- keep approved designs in `docs/specs/`
+- keep execution plans in `docs/plans/`
+- keep verification-oriented notes in `docs/reviews/`
+- keep reusable maintenance guidance inside the repository
+
+## Website Maintenance Rules
+
+- prefer changing `scripts/build_site.py` over directly editing generated files in `site/`
+- preserve original lab wording unless explicit approval says otherwise
+- treat `docs/research/photonlab-2026-04-15/` as the legacy reference archive
+- keep publication additions in descending year order
+- run tests after rebuilding
+
+## Open Source Posture
+
+This repository is structured so that its maintenance workflow can be published and reused remotely.
+
+Repo-local guidance should therefore live in versioned files such as:
+
+- `README.md`
+- `docs/maintenance.md`
+- `skills/photonlab-site-maintenance/SKILL.md`
 
 ## Harness Posture
 
-There is no external engineering agent split in this repo. Codex may dispatch
-sub-agents for research, implementation, or review, but the repo stays organized by
-artifact type instead of permanent agent domains.
+Codex or other agents may dispatch sub-agents for research, implementation, or review, but durable outputs should always be written back into this repository in a way that a later contributor can understand without prior chat history.
