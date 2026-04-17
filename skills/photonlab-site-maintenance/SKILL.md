@@ -7,7 +7,7 @@ description: Use when updating the PhotonLab static website in this repository, 
 
 ## Overview
 
-This repository maintains the PhotonLab website through a generated static-site workflow.
+This repository maintains the PhotonLab website through a generated two-option static-site workflow.
 
 The core rule is:
 
@@ -31,7 +31,8 @@ Do not use this skill for unrelated repository administration.
 
 - `scripts/build_site.py` is the main implementation surface
 - `docs/research/photonlab-2026-04-15/` preserves the legacy website
-- `site/` is generated output
+- `site1/` is the generated `Hyperspace` option
+- `site2/` is the generated `Editorial` option
 
 ## Content Constraints
 
@@ -56,7 +57,7 @@ python3 scripts/build_site.py
 python3 -m unittest discover -s tests -v
 ```
 
-5. review generated output in `site/`
+5. review generated output in `site1/` and `site2/`
 
 ## Important Data Structures
 
@@ -69,6 +70,7 @@ Inside `scripts/build_site.py`, check these first:
 - `RECENT_PUBLICATIONS`
 - `RECENT_CONFERENCE_PUBLICATIONS`
 - `LAB_CSS`
+- `EDITORIAL_LAB_CSS`
 
 ## Common Tasks
 

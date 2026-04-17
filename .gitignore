@@ -7,6 +7,7 @@ dist/
 build/
 .vite/
 .cache/
+.preview-cache/
 coverage/
 *.log
 .superpowers/

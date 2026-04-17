@@ -6,11 +6,13 @@ import shutil
 
 PROJECT_ROOT = Path("/Users/jingweiling/coding/webpage_develop")
 SOURCE_ROOT = PROJECT_ROOT / "docs/research/photonlab-2026-04-15/photonlab.hajim.rochester.edu"
-SITE_ROOT = PROJECT_ROOT / "site"
+SITE1_ROOT = PROJECT_ROOT / "site1"
+SITE2_ROOT = PROJECT_ROOT / "site2"
 TEMPLATE_ORIGIN = "https://html5up.net/uploads/demos/hyperspace"
+EDITORIAL_VENDOR_ROOT = PROJECT_ROOT / "vendor/html5up-editorial"
 
 INTRO_IMAGE_SOURCE = Path("/Users/jingweiling/Downloads/image.png")
-INTRO_IMAGE_TARGET = SITE_ROOT / "images" / "image.png"
+INTRO_IMAGE_TARGET = SITE1_ROOT / "images" / "image.png"
 
 
 ABOUT_ITEMS = [
@@ -497,12 +499,31 @@ def copy_tree(source: Path, target: Path) -> None:
     shutil.copytree(source, target, dirs_exist_ok=True)
 
 
+def reset_dir(path: Path) -> None:
+    if path.exists():
+        shutil.rmtree(path)
+
+
 def copy_assets() -> None:
     INTRO_IMAGE_TARGET.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(INTRO_IMAGE_SOURCE, INTRO_IMAGE_TARGET)
-    copy_tree(SOURCE_ROOT / "img" / "index_research", SITE_ROOT / "images" / "index_research")
-    copy_tree(SOURCE_ROOT / "img" / "research", SITE_ROOT / "images" / "research")
-    copy_tree(SOURCE_ROOT / "img" / "team", SITE_ROOT / "images" / "team")
+    copy_tree(SOURCE_ROOT / "img" / "index_research", SITE1_ROOT / "images" / "index_research")
+    copy_tree(SOURCE_ROOT / "img" / "research", SITE1_ROOT / "images" / "research")
+    copy_tree(SOURCE_ROOT / "img" / "team", SITE1_ROOT / "images" / "team")
+
+
+def copy_common_images(target_root: Path) -> None:
+    intro_target = target_root / "images" / "image.png"
+    intro_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(INTRO_IMAGE_SOURCE, intro_target)
+    copy_tree(SOURCE_ROOT / "img" / "index_research", target_root / "images" / "index_research")
+    copy_tree(SOURCE_ROOT / "img" / "research", target_root / "images" / "research")
+    copy_tree(SOURCE_ROOT / "img" / "team", target_root / "images" / "team")
+
+
+def copy_editorial_assets(target_root: Path) -> None:
+    copy_tree(EDITORIAL_VENDOR_ROOT / "assets", target_root / "assets")
+    copy_common_images(target_root)
 
 
 def recent_publication_filters() -> str:
@@ -747,6 +768,439 @@ def generic_page(title: str, body: str, active: str, depth: int = 0) -> str:
 """
 
 
+EDITORIAL_LAB_CSS = """
+body {
+  background: #f6f7fb;
+}
+
+#main > .inner {
+  max-width: 72rem;
+}
+
+#header .logo {
+  letter-spacing: 0.02em;
+}
+
+#banner .content p {
+  max-width: 38rem;
+}
+
+#banner .image.object.intro-art img {
+  border-radius: 0.5em;
+  box-shadow: 0 1.5rem 3rem rgba(17, 24, 39, 0.16);
+}
+
+.photonlab-section .posts article .image img {
+  aspect-ratio: 1.45 / 1;
+  object-fit: cover;
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.member-grid article {
+  border: 1px solid rgba(33, 43, 54, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.25rem 1.15rem;
+  background: #ffffff;
+  min-width: 0;
+}
+
+.member-grid h3 {
+  font-size: 1rem;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.member-grid p {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.curated-publications li {
+  margin-bottom: 1rem;
+}
+
+.editorial-archive .categories {
+  margin-bottom: 2rem;
+}
+
+.editorial-archive .type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding-left: 0;
+}
+
+.editorial-archive .type li {
+  list-style: none;
+  margin: 0;
+}
+
+.editorial-archive .type a {
+  border-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid rgba(33, 43, 54, 0.14);
+  border-radius: 999px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.editorial-archive .portfolio-items > div {
+  margin-bottom: 2rem;
+}
+
+.editorial-archive .thumbnail,
+.editorial-archive .portfolio-item {
+  background: #ffffff;
+  border: 1px solid rgba(33, 43, 54, 0.08);
+  border-radius: 0.45rem;
+  padding: 1.4rem;
+  min-width: 0;
+}
+
+.editorial-archive .thumbnail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.editorial-archive .thumbnail img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.editorial-archive .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+
+.editorial-archive .row > [class*="col-lg-12"] {
+  width: 100%;
+}
+
+.editorial-archive .row > [class*="col-md-4"],
+.editorial-archive .row > [class*="col-md-3"] {
+  width: calc(20% - 1.2rem);
+}
+
+.editorial-archive .caption {
+  min-width: 0;
+  font-size: 0.88em;
+}
+
+.editorial-archive .caption h3 {
+  margin-bottom: 0.65em;
+  line-height: 1.25;
+  font-size: 1.05em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.editorial-archive .caption p,
+.editorial-archive p,
+.editorial-archive li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media screen and (max-width: 1280px) {
+  .member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .editorial-archive .row > [class*="col-md-4"],
+  .editorial-archive .row > [class*="col-md-3"] {
+    width: calc(33.333% - 1rem);
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .editorial-archive .row > [class*="col-md-4"],
+  .editorial-archive .row > [class*="col-md-3"] {
+    width: calc(50% - 0.75rem);
+  }
+}
+
+@media screen and (max-width: 736px) {
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-archive .row > [class*="col-md-4"],
+  .editorial-archive .row > [class*="col-md-3"] {
+    width: 100%;
+  }
+}
+"""
+
+
+def editorial_head(title: str, depth: int = 0) -> str:
+    prefix = "../" * depth
+    return f"""<!DOCTYPE HTML>
+<!--
+    Editorial by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>{title}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="{prefix}assets/css/main.css" />
+        <link rel="stylesheet" href="{prefix}assets/editorial-lab.css" />
+    </head>
+"""
+
+
+def editorial_scripts(prefix: str = "") -> str:
+    return f"""
+        <script src="{prefix}assets/js/jquery.min.js"></script>
+        <script src="{prefix}assets/js/browser.min.js"></script>
+        <script src="{prefix}assets/js/breakpoints.min.js"></script>
+        <script src="{prefix}assets/js/util.js"></script>
+        <script src="{prefix}assets/js/main.js"></script>
+"""
+
+
+def editorial_menu_items(depth: int = 0) -> str:
+    prefix = "../" * depth
+    return f"""
+                                    <ul>
+                                        <li><a href="{prefix}index.html">Home</a></li>
+                                        <li><a href="{prefix}index.html#about-us">About Us</a></li>
+                                        <li><a href="{prefix}research.html">Research</a></li>
+                                        <li><a href="{prefix}members.html">Members</a></li>
+                                        <li><a href="{prefix}publications.html">Publications</a></li>
+                                    </ul>
+"""
+
+
+def editorial_page(title: str, body: str, depth: int = 0) -> str:
+    prefix = "../" * depth
+    return f"""{editorial_head(title, depth)}
+    <body class="is-preload">
+        <div id="wrapper">
+            <div id="main">
+                <div class="inner">
+                    <header id="header">
+                        <a href="{prefix}index.html" class="logo"><strong>Laboratory for Nanophotonics</strong> Editorial Option</a>
+                    </header>
+{body}
+                </div>
+            </div>
+
+            <div id="sidebar">
+                <div class="inner">
+                    <nav id="menu">
+                        <header class="major">
+                            <h2>Menu</h2>
+                        </header>
+{editorial_menu_items(depth)}
+                    </nav>
+                    <section>
+                        <header class="major">
+                            <h2>Laboratory for Nanophotonics</h2>
+                        </header>
+                        <p>Quantum, Nonlinear and Mechanical Photonics</p>
+                    </section>
+                </div>
+            </div>
+        </div>
+{editorial_scripts(prefix)}
+    </body>
+</html>
+"""
+
+
+def build_editorial_home() -> str:
+    about_sections = "\n".join(
+        f"""
+                                        <article>
+                                            <div class="content">
+                                                <h3>{title}</h3>
+                                                <p>{text}</p>
+                                            </div>
+                                        </article>"""
+        for title, text in ABOUT_ITEMS
+    )
+    research_posts = "\n".join(
+        f"""
+                                        <article>
+                                            <a href="{item["href"]}" class="image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
+                                            <h3>{item["title"]}</h3>
+                                            <p>{item["summary"]}</p>
+                                            <ul class="actions">
+                                                <li><a href="{item["href"]}" class="button">Learn More</a></li>
+                                            </ul>
+                                        </article>"""
+        for item in RESEARCH_ITEMS
+    )
+    member_cards = "\n".join(
+        f"""
+                                    <article>
+                                        <h3>{member["name"]}</h3>
+                                        {"".join(f"<p>{line}</p>" for line in member["lines"])}
+                                    </article>"""
+        for member in MEMBER_PREVIEW
+    )
+    publication_items = "\n".join(f"                                <li>{entry}</li>" for entry in PUBLICATION_PREVIEW)
+    body = f"""
+                    <section id="banner">
+                        <div class="content">
+                            <header>
+                                <h1>Laboratory for Nanophotonics</h1>
+                                <p>Quantum, Nonlinear and Mechanical Photonics</p>
+                            </header>
+                            <p>{ABOUT_ITEMS[1][1]}</p>
+                            <ul class="actions">
+                                <li><a href="#about-us" class="button big">About Us</a></li>
+                            </ul>
+                        </div>
+                        <span class="image object intro-art">
+                            <img src="images/image.png" alt="Photonic integrated circuit" />
+                        </span>
+                    </section>
+
+                    <section id="about-us" class="photonlab-section">
+                        <header class="major">
+                            <h2>About Us</h2>
+                        </header>
+                        <div class="features">
+{about_sections}
+                        </div>
+                    </section>
+
+                    <section id="research" class="photonlab-section">
+                        <header class="major">
+                            <h2>Research</h2>
+                        </header>
+                        <div class="posts">
+{research_posts}
+                        </div>
+                    </section>
+
+                    <section id="members" class="photonlab-section">
+                        <header class="major">
+                            <h2>Members</h2>
+                        </header>
+                        <div class="member-grid">
+{member_cards}
+                        </div>
+                        <ul class="actions" style="margin-top: 2rem;">
+                            <li><a href="members.html" class="button">Members</a></li>
+                        </ul>
+                    </section>
+
+                    <section id="publications" class="photonlab-section">
+                        <header class="major">
+                            <h2>Publications</h2>
+                        </header>
+                        <ul class="curated-publications">
+{publication_items}
+                        </ul>
+                        <ul class="actions">
+                            <li><a href="publications.html" class="button">Publications</a></li>
+                        </ul>
+                    </section>
+"""
+    return editorial_page("Laboratory for Nanophotonics", body)
+
+
+def build_editorial_research_overview() -> str:
+    research_posts = "\n".join(
+        f"""
+                                <article>
+                                    <a href="{item["href"]}" class="image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
+                                    <h3>{item["title"]}</h3>
+                                    <p>{item["summary"]}</p>
+                                    <ul class="actions">
+                                        <li><a href="{item["href"]}" class="button">Learn More</a></li>
+                                    </ul>
+                                </article>"""
+        for item in RESEARCH_ITEMS
+    )
+    body = f"""
+                    <section>
+                        <header class="main">
+                            <h1>Research</h1>
+                        </header>
+                        <div class="posts">
+{research_posts}
+                        </div>
+                    </section>
+"""
+    return editorial_page("Research", body)
+
+
+def build_editorial_research_detail(source_name: str, title: str) -> str:
+    source = read_source(source_name)
+    article = extract_between(source, "<h2>", "<!-- Contact Section -->")
+    article = article.replace('src="img/research/', 'src="../images/research/')
+    body = f"""
+                    <section>
+                        <header class="main">
+                            <h1>{title}</h1>
+                        </header>
+                        <div class="legacy-copy">
+                            {article}
+                        </div>
+                    </section>
+"""
+    return editorial_page(title, body, depth=1)
+
+
+def build_editorial_members() -> str:
+    source = read_source("member.html")
+    archive = extract_between(source, '<div id="works-section">', "<!-- Contact Section -->")
+    archive = archive.replace('src="img/team/', 'src="images/team/')
+    body = f"""
+                    <section>
+                        <header class="main">
+                            <h1>Members</h1>
+                        </header>
+                        <div class="editorial-archive">
+                            {archive}
+                        </div>
+                    </section>
+"""
+    return editorial_page("Members", body)
+
+
+def build_editorial_publications() -> str:
+    source = read_source("publication.html")
+    archive = extract_between(source, '<div id="works-section">', "<!-- Team Section --><!-- Contact Section -->")
+    archive = inject_recent_publications(archive)
+    body = f"""
+                    <section>
+                        <header class="main">
+                            <h1>Publications</h1>
+                        </header>
+                        <div class="editorial-archive">
+                            {archive}
+                        </div>
+                    </section>
+"""
+    return editorial_page("Publications", body)
+
+
 def build_research_overview() -> str:
     research_sections = "\n".join(
         f"""
@@ -822,31 +1276,59 @@ def build_publications() -> str:
     return generic_page("Publications", body, "publications")
 
 
-def main() -> int:
-    copy_assets()
-    write_text(SITE_ROOT / "assets" / "lab.css", LAB_CSS.strip() + "\n")
-    write_text(SITE_ROOT / "assets" / "lab.js", LAB_JS.strip() + "\n")
-    write_text(SITE_ROOT / "index.html", build_home())
-    write_text(SITE_ROOT / "research.html", build_research_overview())
-    write_text(SITE_ROOT / "members.html", build_members())
-    write_text(SITE_ROOT / "publications.html", build_publications())
+def write_editorial_site() -> None:
+    reset_dir(SITE2_ROOT)
+    copy_editorial_assets(SITE2_ROOT)
+    write_text(SITE2_ROOT / "assets" / "editorial-lab.css", EDITORIAL_LAB_CSS.strip() + "\n")
+    write_text(SITE2_ROOT / "index.html", build_editorial_home())
+    write_text(SITE2_ROOT / "research.html", build_editorial_research_overview())
+    write_text(SITE2_ROOT / "members.html", build_editorial_members())
+    write_text(SITE2_ROOT / "publications.html", build_editorial_publications())
     write_text(
-        SITE_ROOT / "research" / "integrated-quantum-photonics.html",
+        SITE2_ROOT / "research" / "integrated-quantum-photonics.html",
+        build_editorial_research_detail("research1.html", "Integrated Quantum Photonics"),
+    )
+    write_text(
+        SITE2_ROOT / "research" / "integrated-nonlinear-photonics.html",
+        build_editorial_research_detail("research2.html", "Integrated Nonlinear Photonics"),
+    )
+    write_text(
+        SITE2_ROOT / "research" / "ln-sic-photonics.html",
+        build_editorial_research_detail("research3.html", "LN&SiC Photonics"),
+    )
+    write_text(
+        SITE2_ROOT / "research" / "integrated-photonic-sensing.html",
+        build_editorial_research_detail("research4.html", "Integrated Photonic Sensing"),
+    )
+
+
+def main() -> int:
+    reset_dir(SITE1_ROOT)
+    copy_assets()
+    write_text(SITE1_ROOT / "assets" / "lab.css", LAB_CSS.strip() + "\n")
+    write_text(SITE1_ROOT / "assets" / "lab.js", LAB_JS.strip() + "\n")
+    write_text(SITE1_ROOT / "index.html", build_home())
+    write_text(SITE1_ROOT / "research.html", build_research_overview())
+    write_text(SITE1_ROOT / "members.html", build_members())
+    write_text(SITE1_ROOT / "publications.html", build_publications())
+    write_text(
+        SITE1_ROOT / "research" / "integrated-quantum-photonics.html",
         build_research_detail("research1.html", "Integrated Quantum Photonics"),
     )
     write_text(
-        SITE_ROOT / "research" / "integrated-nonlinear-photonics.html",
+        SITE1_ROOT / "research" / "integrated-nonlinear-photonics.html",
         build_research_detail("research2.html", "Integrated Nonlinear Photonics"),
     )
     write_text(
-        SITE_ROOT / "research" / "ln-sic-photonics.html",
+        SITE1_ROOT / "research" / "ln-sic-photonics.html",
         build_research_detail("research3.html", "LN&SiC Photonics"),
     )
     write_text(
-        SITE_ROOT / "research" / "integrated-photonic-sensing.html",
+        SITE1_ROOT / "research" / "integrated-photonic-sensing.html",
         build_research_detail("research4.html", "Integrated Photonic Sensing"),
     )
-    print(f"Built site into {SITE_ROOT}")
+    write_editorial_site()
+    print(f"Built site options into {SITE1_ROOT} and {SITE2_ROOT}")
     return 0
 
 

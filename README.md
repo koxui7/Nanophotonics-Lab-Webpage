@@ -1,47 +1,57 @@
 # PhotonLab Website Rebuild
 
-This repository contains the rebuilt static website for the Laboratory for Nanophotonics.
+This repository contains two static website options for the Laboratory for Nanophotonics.
 
-It is designed for agent-assisted maintenance: the generated site lives in `site/`, the site is rebuilt from a Python generator in `scripts/`, and the original website snapshot plus planning documents live in `docs/`.
+The repository is designed for agent-assisted maintenance and open-source collaboration. Future contributors should be able to clone the repo, regenerate both site options locally, understand where the content comes from, and update the site without relying on prior chat history.
+
+## Current Site Options
+
+- `site1/`: the primary `Hyperspace`-based version
+- `site2/`: the alternative `Editorial`-based version
+
+Both versions use the same content set. The difference between them is presentation, layout, and template structure rather than wording.
 
 ## Repository Layout
 
-- `site/`: generated static website output
-- `scripts/build_site.py`: main build entrypoint for regenerating the website
-- `scripts/mirror_site.py`: crawler used to mirror the legacy site for reference
-- `tests/`: regression tests for the crawler and the generated site structure
+- `site1/`: generated static output for option 1
+- `site2/`: generated static output for option 2
+- `scripts/build_site.py`: main generator for both site options
+- `scripts/mirror_site.py`: crawler used to mirror the legacy site
+- `vendor/html5up-editorial/`: vendored `Editorial` template assets used by `site2`
+- `tests/`: regression tests for the crawler and generated sites
 - `docs/research/`: archived copy of the legacy website and research notes
 - `docs/plans/`: implementation plans used during the rebuild
-- `skills/photonlab-site-maintenance/`: repo-local maintenance skill for future contributors and agents
-- `agent.md`: repo-level operating notes for agent-based maintenance
+- `docs/maintenance.md`: maintainer-oriented update guide
+- `skills/photonlab-site-maintenance/`: repo-local maintenance skill for future agents and contributors
+- `agent.md`: repo-level operating notes
 
-## How The Site Works
+## How The Repo Works
 
-The repo does not edit the generated HTML by hand as the primary workflow.
+The intended workflow is generator-first, not hand-edit-first.
 
-The intended maintenance loop is:
+That means:
 
-1. update the structured content or generation logic in `scripts/build_site.py`
-2. rebuild the site into `site/`
-3. run the test suite in `tests/`
-4. review the generated pages in `site/`
+1. change structured content or generation logic in `scripts/build_site.py`
+2. rebuild both site options
+3. run tests
+4. review generated output in `site1/` and `site2/`
 
-Most important logic lives in `scripts/build_site.py`:
+In normal maintenance, do not start by editing generated HTML directly.
 
-- homepage structure
-- member preview entries
-- publication preview entries on the homepage
-- recent journal publication additions
-- recent conference publication additions
-- CSS overrides layered on top of the HTML5 UP template
+## Build Command
 
-## Rebuild Commands
-
-Rebuild the site:
+Generate both options:
 
 ```bash
 python3 scripts/build_site.py
 ```
+
+After running that command:
+
+- `site1/` is regenerated as the `Hyperspace` option
+- `site2/` is regenerated as the `Editorial` option
+
+## Test Commands
 
 Run all tests:
 
@@ -61,34 +71,52 @@ Run only crawler tests:
 python3 -m unittest tests/test_mirror_site.py -v
 ```
 
+## Where To Make Changes
+
+Most important maintenance logic lives in `scripts/build_site.py`.
+
+Key areas inside that file:
+
+- `ABOUT_ITEMS`
+- `RESEARCH_ITEMS`
+- `MEMBER_PREVIEW`
+- `PUBLICATION_PREVIEW`
+- `RECENT_PUBLICATIONS`
+- `RECENT_CONFERENCE_PUBLICATIONS`
+- `LAB_CSS` for the `site1` styling layer
+- `EDITORIAL_LAB_CSS` for the `site2` styling layer
+
+If you need to update homepage structure, member previews, publication data, conference additions, or layout overrides, this is the first file to inspect.
+
 ## Content Rules
 
-- Prefer `restructure`, not `rewrite`
-- Do not change existing lab wording unless explicitly approved
-- Layout, grouping, navigation, and formatting changes are allowed
-- Publication updates are allowed when they preserve the existing citation style
-- Conference additions should be appended in descending year order
+- prefer `restructure`, not `rewrite`
+- preserve existing lab wording unless explicit approval says otherwise
+- layout, grouping, navigation, and formatting changes are allowed
+- publication additions are allowed when they preserve the existing citation style
+- conference additions should remain in descending year order
+- the homepage `Publications` preview is curated and should not automatically become "the latest 3 papers"
 
-## Updating Publications
+## Publications Model
 
-There are two different publication surfaces:
+There are two publication surfaces:
 
 1. homepage `Publications` preview
 2. full `Publications` archive page
 
-The homepage preview is intentionally curated and should contain representative, high-impact papers rather than simply the most recent ones.
+The homepage preview is intentionally selective and should contain representative, high-impact papers.
 
-The full archive page combines:
+The full publication archive combines:
 
-- legacy archived publications from the mirrored website
-- newer journal publications defined in `RECENT_PUBLICATIONS`
-- newer conference items defined in `RECENT_CONFERENCE_PUBLICATIONS`
+- legacy archived publications from the mirrored site
+- newer journal entries from `RECENT_PUBLICATIONS`
+- newer conference entries from `RECENT_CONFERENCE_PUBLICATIONS`
 
 When updating publications:
 
-1. edit the publication data structures in `scripts/build_site.py`
+1. edit the data structures in `scripts/build_site.py`
 2. keep years in descending order
-3. rebuild
+3. rebuild both site options
 4. run tests
 
 ## Legacy Source Material
@@ -97,13 +125,30 @@ The mirrored legacy website is stored under:
 
 `docs/research/photonlab-2026-04-15/`
 
-This is the reference source for:
+Use that archive as the reference source for:
 
 - original wording
 - original member details
 - original publication archive
 - original research text and images
 
-## Contributor Note
+## Suggested Update Workflow
 
-This repository is meant to be usable by future maintainers, not only the original author of this rebuild. If you are updating the site through an agent workflow, start with the repo skill in `skills/photonlab-site-maintenance/SKILL.md` and then work through `scripts/build_site.py` rather than patching generated pages directly unless there is a specific reason.
+For most future changes:
+
+1. inspect the relevant legacy content in `docs/research/`
+2. edit `scripts/build_site.py`
+3. run `python3 scripts/build_site.py`
+4. run `python3 -m unittest discover -s tests -v`
+5. compare `site1/` and `site2/`
+6. commit the generator, generated output, and any related docs together
+
+## Notes For Future Agents
+
+If you are maintaining this repo through an agent workflow, start with:
+
+- `README.md`
+- `docs/maintenance.md`
+- `skills/photonlab-site-maintenance/SKILL.md`
+
+These files define the intended maintenance model for this open-source repository.

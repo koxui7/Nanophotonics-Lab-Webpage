@@ -11,13 +11,16 @@ The main source of truth for the rebuilt site is:
 - `scripts/build_site.py` for generated structure and curated additions
 - `docs/research/photonlab-2026-04-15/` for legacy content and wording
 
-The generated HTML in `site/` is an output artifact.
+The generated HTML in `site1/` and `site2/` are output artifacts.
 
 ## Key Maintenance Areas
 
 ### Homepage
 
-Homepage sections are assembled in `build_home()` inside `scripts/build_site.py`.
+Homepage sections are assembled in:
+
+- `build_home()` for `site1`
+- `build_editorial_home()` for `site2`
 
 The homepage includes:
 
@@ -33,7 +36,10 @@ The homepage publication preview uses `PUBLICATION_PREVIEW`.
 
 Member preview cards on the homepage use `MEMBER_PREVIEW`.
 
-The full members page is derived from the archived site content and then restyled through CSS overrides embedded in `LAB_CSS`.
+The full members page is derived from the archived site content and then restyled through CSS overrides embedded in:
+
+- `LAB_CSS` for `site1`
+- `EDITORIAL_LAB_CSS` for `site2`
 
 If member cards overflow, the first place to check is:
 
@@ -53,7 +59,12 @@ The conference section is intentionally flattened into one conference block, but
 
 ### Styling
 
-Template-level overrides live inside the `LAB_CSS` string in `scripts/build_site.py` and are written out to `site/assets/lab.css`.
+Template-level overrides live inside `scripts/build_site.py`.
+
+Current style layers are:
+
+- `LAB_CSS` for `site1`
+- `EDITORIAL_LAB_CSS` for `site2`
 
 Use that layer for:
 
@@ -62,7 +73,7 @@ Use that layer for:
 - responsive tuning
 - color adjustments
 
-Avoid editing generated CSS in `site/assets/lab.css` directly unless you are debugging and plan to port the change back into `scripts/build_site.py`.
+Avoid editing generated CSS in `site1/` or `site2/` directly unless you are debugging and plan to port the change back into `scripts/build_site.py`.
 
 ## Safe Update Workflow
 
@@ -70,7 +81,7 @@ Avoid editing generated CSS in `site/assets/lab.css` directly unless you are deb
 2. edit `scripts/build_site.py`
 3. run `python3 scripts/build_site.py`
 4. run `python3 -m unittest discover -s tests -v`
-5. review generated output under `site/`
+5. review generated output under `site1/` and `site2/`
 
 ## What To Avoid
 
