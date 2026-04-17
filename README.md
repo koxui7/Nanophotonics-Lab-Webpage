@@ -146,15 +146,28 @@ For most future changes:
 
 ## Collaboration Model
 
-This repository is intended to be open for lab collaborators, but not as a free-for-all on the mainline branches.
+This repository is intended to be public and visible, but tightly maintained.
 
-- `main` and `master` are treated as protected branches
-- contributors should create and push their own working branches
-- changes should flow back through pull requests
+- `main` is the only protected integration branch
+- upstream changes are reviewed and merged by the maintainer
+- outside contributors should work from forks and open pull requests back to `main`
 - contributors should not push changes onto somebody else's branch unless they have that person's explicit permission
-- recommended branch format: `yourname/topic`
+- recommended branch format in forks: `yourname/topic`
 
-See `CONTRIBUTING.md` for the expected branch naming and collaboration policy.
+See `CONTRIBUTING.md` for the expected branch naming, fork workflow, and review policy.
+
+## License Status
+
+This repository intentionally does **not** include an open-source software license.
+
+In practice, that means:
+
+- the source is visible for collaboration and review
+- contributors may fork the repository and submit pull requests
+- the repository contents remain under copyright
+- official use, deployment, or adaptation as a lab website is reserved for the Qiang Lin research group unless explicit permission is granted by the maintainer
+
+See `COPYRIGHT_AND_USE.md` for the project-specific usage policy.
 
 ## Notes For Future Agents
 
@@ -164,4 +177,4 @@ If you are maintaining this repo through an agent workflow, start with:
 - `docs/maintenance.md`
 - `skills/photonlab-site-maintenance/SKILL.md`
 
-These files define the intended maintenance model for this open-source repository.
+These files define the intended maintenance model for this public, maintainer-controlled repository.
