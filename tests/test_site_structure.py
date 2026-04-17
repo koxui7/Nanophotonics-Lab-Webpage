@@ -43,6 +43,34 @@ class SiteStructureTests(unittest.TestCase):
         self.assertTrue((SITE2_ROOT / "assets" / "css" / "main.css").exists())
         self.assertTrue((SITE2_ROOT / "assets" / "js" / "main.js").exists())
 
+    def test_site2_sidebar_places_lab_identity_before_menu(self):
+        html = (SITE2_ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertLess(
+            html.index("<h2>Laboratory for Nanophotonics</h2>"),
+            html.index("<nav id=\"menu\">"),
+        )
+
+    def test_site2_editorial_alignment_rules_exist(self):
+        css = (SITE2_ROOT / "assets" / "editorial-lab.css").read_text(encoding="utf-8")
+        for marker in [
+            ".photonlab-section .features {",
+            "display: grid",
+            "grid-template-columns: repeat(3, minmax(0, 1fr))",
+            "align-items: stretch",
+            ".photonlab-section .features article {",
+            ".photonlab-section .posts {",
+            ".photonlab-section .posts article {",
+            ".photonlab-section .posts article .actions",
+            "margin-top: auto",
+            ".member-grid {",
+            "gap: 1rem",
+            "grid-template-columns: repeat(5, minmax(0, 1fr))",
+            "max-width: 84rem",
+            ".editorial-archive .row {",
+            "gap: 1rem",
+        ]:
+            self.assertIn(marker, css)
+
     def test_main_pages_share_primary_navigation(self):
         required_labels = ["Home", "About Us", "Research", "Members", "Publications"]
         pages = [

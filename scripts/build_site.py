@@ -774,7 +774,7 @@ body {
 }
 
 #main > .inner {
-  max-width: 72rem;
+  max-width: 84rem;
 }
 
 #header .logo {
@@ -790,21 +790,53 @@ body {
   box-shadow: 0 1.5rem 3rem rgba(17, 24, 39, 0.16);
 }
 
+.photonlab-section .features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.photonlab-section .features article {
+  display: flex;
+}
+
+.photonlab-section .features article .content {
+  display: flex;
+  flex-direction: column;
+}
+
+.photonlab-section .posts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 1.75rem;
+}
+
+.photonlab-section .posts article {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .photonlab-section .posts article .image img {
   aspect-ratio: 1.45 / 1;
   object-fit: cover;
 }
 
+.photonlab-section .posts article .actions {
+  margin-top: auto;
+}
+
 .member-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .member-grid article {
   border: 1px solid rgba(33, 43, 54, 0.1);
   border-radius: 0.5rem;
-  padding: 1.25rem 1.15rem;
+  padding: 1.2rem 1rem;
   background: #ffffff;
   min-width: 0;
 }
@@ -887,8 +919,8 @@ body {
 .editorial-archive .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  row-gap: 1.5rem;
+  gap: 1rem;
+  row-gap: 1rem;
 }
 
 .editorial-archive .row > [class*="col-lg-12"] {
@@ -897,7 +929,7 @@ body {
 
 .editorial-archive .row > [class*="col-md-4"],
 .editorial-archive .row > [class*="col-md-3"] {
-  width: calc(20% - 1.2rem);
+  width: calc(20% - 0.8rem);
 }
 
 .editorial-archive .caption {
@@ -921,8 +953,16 @@ body {
 }
 
 @media screen and (max-width: 1280px) {
-  .member-grid {
+  .photonlab-section .features {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .photonlab-section .posts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .member-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .editorial-archive .row > [class*="col-md-4"],
@@ -932,6 +972,14 @@ body {
 }
 
 @media screen and (max-width: 980px) {
+  .photonlab-section .posts {
+    grid-template-columns: 1fr;
+  }
+
+  .member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .editorial-archive .row > [class*="col-md-4"],
   .editorial-archive .row > [class*="col-md-3"] {
     width: calc(50% - 0.75rem);
@@ -939,6 +987,10 @@ body {
 }
 
 @media screen and (max-width: 736px) {
+  .photonlab-section .features {
+    grid-template-columns: 1fr;
+  }
+
   .member-grid {
     grid-template-columns: 1fr;
   }
@@ -1009,18 +1061,18 @@ def editorial_page(title: str, body: str, depth: int = 0) -> str:
 
             <div id="sidebar">
                 <div class="inner">
-                    <nav id="menu">
-                        <header class="major">
-                            <h2>Menu</h2>
-                        </header>
-{editorial_menu_items(depth)}
-                    </nav>
                     <section>
                         <header class="major">
                             <h2>Laboratory for Nanophotonics</h2>
                         </header>
                         <p>Quantum, Nonlinear and Mechanical Photonics</p>
                     </section>
+                    <nav id="menu">
+                        <header class="major">
+                            <h2>Menu</h2>
+                        </header>
+{editorial_menu_items(depth)}
+                    </nav>
                 </div>
             </div>
         </div>
