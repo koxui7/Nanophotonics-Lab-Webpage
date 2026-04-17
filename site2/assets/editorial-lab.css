@@ -2,12 +2,35 @@ body {
   background: #f6f7fb;
 }
 
+@media screen and (min-width: 1281px) {
+  #sidebar {
+    width: 22.5em;
+  }
+
+  #sidebar > .inner {
+    width: 22.5em;
+  }
+
+  #sidebar .toggle {
+    left: 22.5em;
+  }
+
+  #sidebar.inactive {
+    margin-left: -22.5em;
+  }
+}
+
 #main > .inner {
-  max-width: 84rem;
+  max-width: 90rem;
 }
 
 #header .logo {
   letter-spacing: 0.02em;
+}
+
+#sidebar > .inner > section:first-child h2 {
+  font-size: 1.85em;
+  line-height: 1.15;
 }
 
 #banner .content p {
@@ -19,41 +42,117 @@ body {
   box-shadow: 0 1.5rem 3rem rgba(17, 24, 39, 0.16);
 }
 
-.photonlab-section .features {
+.about-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: stretch;
+  margin-top: 0.75rem;
 }
 
-.photonlab-section .features article {
-  display: flex;
-}
-
-.photonlab-section .features article .content {
+.about-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: 1.8rem 1.5rem;
+  border: 1px solid rgba(33, 43, 54, 0.12);
+  border-radius: 0.6rem;
+  background: #ffffff;
+  box-shadow: 0 1rem 2.4rem rgba(17, 24, 39, 0.06);
 }
 
-.photonlab-section .posts {
+.about-card-header {
+  display: flex;
+  align-items: flex-end;
+  min-height: 3.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid rgba(33, 43, 54, 0.1);
+}
+
+.about-card-header h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.about-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.about-card-body p {
+  margin: 0;
+}
+
+.research-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem 1.75rem;
+  gap: 1.75rem;
+  align-items: stretch;
+  margin-top: 0.75rem;
 }
 
-.photonlab-section .posts article {
+.research-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   height: 100%;
+  border: 1px solid rgba(33, 43, 54, 0.12);
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 1.2rem 2.6rem rgba(17, 24, 39, 0.07);
 }
 
-.photonlab-section .posts article .image img {
-  aspect-ratio: 1.45 / 1;
+.research-card-image {
+  display: block;
+  aspect-ratio: 1.65 / 1;
+  overflow: hidden;
+}
+
+.research-card-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.photonlab-section .posts article .actions {
+.research-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 14rem;
+  padding: 1.5rem 1.6rem 1rem;
+}
+
+.research-card-body h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.research-card-body p {
+  margin: 0;
+}
+
+.research-card-actions {
   margin-top: auto;
+  padding: 0 1.6rem 1.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.research-card-actions .actions {
+  margin: 0;
+}
+
+.research-card-actions .actions li:first-child {
+  padding-left: 0;
+}
+
+.research-card-actions .button {
+  margin: 0;
 }
 
 .member-grid {
@@ -182,26 +281,11 @@ body {
 }
 
 @media screen and (max-width: 1280px) {
-  .photonlab-section .features {
+  .about-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .photonlab-section .posts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .member-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .editorial-archive .row > [class*="col-md-4"],
-  .editorial-archive .row > [class*="col-md-3"] {
-    width: calc(33.333% - 1rem);
-  }
-}
-
-@media screen and (max-width: 980px) {
-  .photonlab-section .posts {
+  .research-grid {
     grid-template-columns: 1fr;
   }
 
@@ -215,9 +299,48 @@ body {
   }
 }
 
-@media screen and (max-width: 736px) {
-  .photonlab-section .features {
+@media screen and (max-width: 980px) {
+  #sidebar {
+    width: 100vw;
+  }
+
+  #sidebar > .inner {
+    width: 100vw;
+  }
+
+  #sidebar .toggle {
+    left: 100vw;
+  }
+
+  #sidebar.inactive {
+    margin-left: -100vw;
+  }
+
+  .about-grid,
+  .research-grid {
     grid-template-columns: 1fr;
+  }
+
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-archive .row > [class*="col-md-4"],
+  .editorial-archive .row > [class*="col-md-3"] {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 736px) {
+  .about-card,
+  .research-card-body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .research-card-actions {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .member-grid {

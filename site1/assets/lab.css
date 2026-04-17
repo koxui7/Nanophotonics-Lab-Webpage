@@ -240,7 +240,7 @@ h3.major:after {
 @media screen and (max-width: 1280px) {
   .legacy-archive .row > [class*="col-md-4"],
   .legacy-archive .row > [class*="col-md-3"] {
-    width: calc(33.333% - 1em);
+    width: calc(50% - 0.75em);
   }
 }
 

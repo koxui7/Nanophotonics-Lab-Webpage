@@ -24,6 +24,7 @@ Both versions use the same content set. The difference between them is presentat
 - `docs/maintenance.md`: maintainer-oriented update guide
 - `skills/photonlab-site-maintenance/`: repo-local maintenance skill for future agents and contributors
 - `agent.md`: repo-level operating notes
+- `CONTRIBUTING.md`: branch, PR, and collaboration rules for open-source contributors
 
 ## How The Repo Works
 
@@ -142,6 +143,18 @@ For most future changes:
 4. run `python3 -m unittest discover -s tests -v`
 5. compare `site1/` and `site2/`
 6. commit the generator, generated output, and any related docs together
+
+## Collaboration Model
+
+This repository is intended to be open for lab collaborators, but not as a free-for-all on the mainline branches.
+
+- `main` and `master` are treated as protected branches
+- contributors should create and push their own working branches
+- changes should flow back through pull requests
+- contributors should not push changes onto somebody else's branch unless they have that person's explicit permission
+- recommended branch format: `yourname/topic`
+
+See `CONTRIBUTING.md` for the expected branch naming and collaboration policy.
 
 ## Notes For Future Agents
 

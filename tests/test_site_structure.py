@@ -39,9 +39,12 @@ class SiteStructureTests(unittest.TestCase):
 
     def test_site2_uses_editorial_template_assets(self):
         html = (SITE2_ROOT / "index.html").read_text(encoding="utf-8")
+        publications_html = (SITE2_ROOT / "publications.html").read_text(encoding="utf-8")
         self.assertIn("editorial", html.lower())
         self.assertTrue((SITE2_ROOT / "assets" / "css" / "main.css").exists())
         self.assertTrue((SITE2_ROOT / "assets" / "js" / "main.js").exists())
+        self.assertTrue((SITE2_ROOT / "assets" / "editorial-lab.js").exists())
+        self.assertIn('assets/editorial-lab.js', publications_html)
 
     def test_site2_sidebar_places_lab_identity_before_menu(self):
         html = (SITE2_ROOT / "index.html").read_text(encoding="utf-8")
@@ -50,26 +53,86 @@ class SiteStructureTests(unittest.TestCase):
             html.index("<nav id=\"menu\">"),
         )
 
+    def test_site2_does_not_repeat_a_second_navigation_bar_in_main_content(self):
+        pages = [
+            SITE2_ROOT / "index.html",
+            SITE2_ROOT / "research" / "ln-sic-photonics.html",
+        ]
+        for page in pages:
+            html = page.read_text(encoding="utf-8")
+            self.assertNotIn('class="editorial-page-nav"', html)
+            self.assertNotIn("Editorial Option", html)
+
     def test_site2_editorial_alignment_rules_exist(self):
+        html = (SITE2_ROOT / "index.html").read_text(encoding="utf-8")
         css = (SITE2_ROOT / "assets" / "editorial-lab.css").read_text(encoding="utf-8")
         for marker in [
-            ".photonlab-section .features {",
+            'class="about-grid"',
+            'class="about-card"',
+            'class="about-card-header"',
+            'class="about-card-body"',
+            'class="research-grid"',
+            'class="research-card"',
+            'class="research-card-body"',
+            'class="research-card-actions"',
+        ]:
+            self.assertIn(marker, html)
+        for marker in [
+            ".about-grid {",
             "display: grid",
             "grid-template-columns: repeat(3, minmax(0, 1fr))",
             "align-items: stretch",
-            ".photonlab-section .features article {",
-            ".photonlab-section .posts {",
-            ".photonlab-section .posts article {",
-            ".photonlab-section .posts article .actions",
+            ".about-card {",
+            ".about-card-header {",
+            ".about-card-body {",
+            ".research-grid {",
+            ".research-card {",
+            ".research-card-body {",
+            ".research-card-actions {",
             "margin-top: auto",
+            "#sidebar {",
+            "width: 22.5em",
+            "#sidebar .toggle {",
+            "left: 22.5em",
+            "#sidebar.inactive {",
+            "margin-left: -22.5em",
             ".member-grid {",
             "gap: 1rem",
             "grid-template-columns: repeat(5, minmax(0, 1fr))",
-            "max-width: 84rem",
+            "max-width: 90rem",
             ".editorial-archive .row {",
             "gap: 1rem",
+            "@media screen and (max-width: 1280px) {",
+            "grid-template-columns: repeat(2, minmax(0, 1fr))",
+            "@media screen and (max-width: 980px) {",
+            "grid-template-columns: 1fr",
         ]:
             self.assertIn(marker, css)
+
+    def test_site_responsive_grids_reduce_items_per_row_on_narrow_widths(self):
+        site1_css = (SITE1_ROOT / "assets" / "lab.css").read_text(encoding="utf-8")
+        site2_css = (SITE2_ROOT / "assets" / "editorial-lab.css").read_text(encoding="utf-8")
+
+        for marker in [
+            "@media screen and (max-width: 1280px) {",
+            "width: calc(50% - 0.75",
+            "@media screen and (max-width: 736px) {",
+            "width: 100%;",
+        ]:
+            self.assertIn(marker, site1_css)
+
+        for marker in [
+            "@media screen and (max-width: 1280px) {",
+            ".member-grid {",
+            "grid-template-columns: repeat(2, minmax(0, 1fr));",
+            "@media screen and (max-width: 980px) {",
+            "grid-template-columns: 1fr;",
+            "#sidebar {",
+            "width: 100vw",
+            "#sidebar.inactive {",
+            "margin-left: -100vw",
+        ]:
+            self.assertIn(marker, site2_css)
 
     def test_main_pages_share_primary_navigation(self):
         required_labels = ["Home", "About Us", "Research", "Members", "Publications"]
@@ -151,8 +214,13 @@ class SiteStructureTests(unittest.TestCase):
 
     def test_members_and_publications_pages_have_archive_structure(self):
         members_html = (SITE1_ROOT / "members.html").read_text(encoding="utf-8")
+        members_html_site2 = (SITE2_ROOT / "members.html").read_text(encoding="utf-8")
         publications_html = (SITE1_ROOT / "publications.html").read_text(encoding="utf-8")
         self.assertIn("Qiang Lin", members_html)
+        self.assertIn("Current Members", members_html)
+        self.assertIn("Alumni", members_html)
+        self.assertIn("Current Members", members_html_site2)
+        self.assertIn("Alumni", members_html_site2)
         self.assertIn("Publications", publications_html)
         self.assertTrue(any(year in publications_html for year in ["2020", "2019", "2018"]))
 

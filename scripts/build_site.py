@@ -419,7 +419,7 @@ h3.major:after {
 @media screen and (max-width: 1280px) {
   .legacy-archive .row > [class*="col-md-4"],
   .legacy-archive .row > [class*="col-md-3"] {
-    width: calc(33.333% - 1em);
+    width: calc(50% - 0.75em);
   }
 }
 
@@ -773,12 +773,35 @@ body {
   background: #f6f7fb;
 }
 
+@media screen and (min-width: 1281px) {
+  #sidebar {
+    width: 22.5em;
+  }
+
+  #sidebar > .inner {
+    width: 22.5em;
+  }
+
+  #sidebar .toggle {
+    left: 22.5em;
+  }
+
+  #sidebar.inactive {
+    margin-left: -22.5em;
+  }
+}
+
 #main > .inner {
-  max-width: 84rem;
+  max-width: 90rem;
 }
 
 #header .logo {
   letter-spacing: 0.02em;
+}
+
+#sidebar > .inner > section:first-child h2 {
+  font-size: 1.85em;
+  line-height: 1.15;
 }
 
 #banner .content p {
@@ -790,41 +813,117 @@ body {
   box-shadow: 0 1.5rem 3rem rgba(17, 24, 39, 0.16);
 }
 
-.photonlab-section .features {
+.about-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: stretch;
+  margin-top: 0.75rem;
 }
 
-.photonlab-section .features article {
-  display: flex;
-}
-
-.photonlab-section .features article .content {
+.about-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: 1.8rem 1.5rem;
+  border: 1px solid rgba(33, 43, 54, 0.12);
+  border-radius: 0.6rem;
+  background: #ffffff;
+  box-shadow: 0 1rem 2.4rem rgba(17, 24, 39, 0.06);
 }
 
-.photonlab-section .posts {
+.about-card-header {
+  display: flex;
+  align-items: flex-end;
+  min-height: 3.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid rgba(33, 43, 54, 0.1);
+}
+
+.about-card-header h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.about-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.about-card-body p {
+  margin: 0;
+}
+
+.research-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem 1.75rem;
+  gap: 1.75rem;
+  align-items: stretch;
+  margin-top: 0.75rem;
 }
 
-.photonlab-section .posts article {
+.research-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   height: 100%;
+  border: 1px solid rgba(33, 43, 54, 0.12);
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 1.2rem 2.6rem rgba(17, 24, 39, 0.07);
 }
 
-.photonlab-section .posts article .image img {
-  aspect-ratio: 1.45 / 1;
+.research-card-image {
+  display: block;
+  aspect-ratio: 1.65 / 1;
+  overflow: hidden;
+}
+
+.research-card-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.photonlab-section .posts article .actions {
+.research-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 14rem;
+  padding: 1.5rem 1.6rem 1rem;
+}
+
+.research-card-body h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.research-card-body p {
+  margin: 0;
+}
+
+.research-card-actions {
   margin-top: auto;
+  padding: 0 1.6rem 1.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.research-card-actions .actions {
+  margin: 0;
+}
+
+.research-card-actions .actions li:first-child {
+  padding-left: 0;
+}
+
+.research-card-actions .button {
+  margin: 0;
 }
 
 .member-grid {
@@ -953,26 +1052,11 @@ body {
 }
 
 @media screen and (max-width: 1280px) {
-  .photonlab-section .features {
+  .about-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .photonlab-section .posts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .member-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .editorial-archive .row > [class*="col-md-4"],
-  .editorial-archive .row > [class*="col-md-3"] {
-    width: calc(33.333% - 1rem);
-  }
-}
-
-@media screen and (max-width: 980px) {
-  .photonlab-section .posts {
+  .research-grid {
     grid-template-columns: 1fr;
   }
 
@@ -986,9 +1070,48 @@ body {
   }
 }
 
-@media screen and (max-width: 736px) {
-  .photonlab-section .features {
+@media screen and (max-width: 980px) {
+  #sidebar {
+    width: 100vw;
+  }
+
+  #sidebar > .inner {
+    width: 100vw;
+  }
+
+  #sidebar .toggle {
+    left: 100vw;
+  }
+
+  #sidebar.inactive {
+    margin-left: -100vw;
+  }
+
+  .about-grid,
+  .research-grid {
     grid-template-columns: 1fr;
+  }
+
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-archive .row > [class*="col-md-4"],
+  .editorial-archive .row > [class*="col-md-3"] {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 736px) {
+  .about-card,
+  .research-card-body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .research-card-actions {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .member-grid {
@@ -1029,6 +1152,7 @@ def editorial_scripts(prefix: str = "") -> str:
         <script src="{prefix}assets/js/breakpoints.min.js"></script>
         <script src="{prefix}assets/js/util.js"></script>
         <script src="{prefix}assets/js/main.js"></script>
+        <script src="{prefix}assets/editorial-lab.js"></script>
 """
 
 
@@ -1052,9 +1176,6 @@ def editorial_page(title: str, body: str, depth: int = 0) -> str:
         <div id="wrapper">
             <div id="main">
                 <div class="inner">
-                    <header id="header">
-                        <a href="{prefix}index.html" class="logo"><strong>Laboratory for Nanophotonics</strong> Editorial Option</a>
-                    </header>
 {body}
                 </div>
             </div>
@@ -1085,9 +1206,11 @@ def editorial_page(title: str, body: str, depth: int = 0) -> str:
 def build_editorial_home() -> str:
     about_sections = "\n".join(
         f"""
-                                        <article>
-                                            <div class="content">
+                                        <article class="about-card">
+                                            <div class="about-card-header">
                                                 <h3>{title}</h3>
+                                            </div>
+                                            <div class="about-card-body">
                                                 <p>{text}</p>
                                             </div>
                                         </article>"""
@@ -1095,13 +1218,17 @@ def build_editorial_home() -> str:
     )
     research_posts = "\n".join(
         f"""
-                                        <article>
-                                            <a href="{item["href"]}" class="image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
-                                            <h3>{item["title"]}</h3>
-                                            <p>{item["summary"]}</p>
-                                            <ul class="actions">
+                                        <article class="research-card">
+                                            <a href="{item["href"]}" class="research-card-image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
+                                            <div class="research-card-body">
+                                                <h3>{item["title"]}</h3>
+                                                <p>{item["summary"]}</p>
+                                            </div>
+                                            <div class="research-card-actions">
+                                                <ul class="actions">
                                                 <li><a href="{item["href"]}" class="button">Learn More</a></li>
-                                            </ul>
+                                                </ul>
+                                            </div>
                                         </article>"""
         for item in RESEARCH_ITEMS
     )
@@ -1135,7 +1262,7 @@ def build_editorial_home() -> str:
                         <header class="major">
                             <h2>About Us</h2>
                         </header>
-                        <div class="features">
+                        <div class="about-grid">
 {about_sections}
                         </div>
                     </section>
@@ -1144,7 +1271,7 @@ def build_editorial_home() -> str:
                         <header class="major">
                             <h2>Research</h2>
                         </header>
-                        <div class="posts">
+                        <div class="research-grid">
 {research_posts}
                         </div>
                     </section>
@@ -1179,13 +1306,17 @@ def build_editorial_home() -> str:
 def build_editorial_research_overview() -> str:
     research_posts = "\n".join(
         f"""
-                                <article>
-                                    <a href="{item["href"]}" class="image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
-                                    <h3>{item["title"]}</h3>
-                                    <p>{item["summary"]}</p>
-                                    <ul class="actions">
-                                        <li><a href="{item["href"]}" class="button">Learn More</a></li>
-                                    </ul>
+                                <article class="research-card">
+                                    <a href="{item["href"]}" class="research-card-image"><img src="{item["image"]}" alt="{item["title"]}" /></a>
+                                    <div class="research-card-body">
+                                        <h3>{item["title"]}</h3>
+                                        <p>{item["summary"]}</p>
+                                    </div>
+                                    <div class="research-card-actions">
+                                        <ul class="actions">
+                                            <li><a href="{item["href"]}" class="button">Learn More</a></li>
+                                        </ul>
+                                    </div>
                                 </article>"""
         for item in RESEARCH_ITEMS
     )
@@ -1194,7 +1325,7 @@ def build_editorial_research_overview() -> str:
                         <header class="main">
                             <h1>Research</h1>
                         </header>
-                        <div class="posts">
+                        <div class="research-grid">
 {research_posts}
                         </div>
                     </section>
@@ -1223,6 +1354,7 @@ def build_editorial_members() -> str:
     source = read_source("member.html")
     archive = extract_between(source, '<div id="works-section">', "<!-- Contact Section -->")
     archive = archive.replace('src="img/team/', 'src="images/team/')
+    archive = archive.replace("<h2>Members</h2>", "<h2>Current Members</h2>", 1)
     body = f"""
                     <section>
                         <header class="main">
@@ -1302,6 +1434,7 @@ def build_members() -> str:
     source = read_source("member.html")
     archive = extract_between(source, '<div id="works-section">', "<!-- Contact Section -->")
     archive = archive.replace('src="img/team/', 'src="images/team/')
+    archive = archive.replace("<h2>Members</h2>", "<h2>Current Members</h2>", 1)
     body = f"""
             <section id="main" class="wrapper">
                 <div class="inner legacy-archive">
@@ -1332,6 +1465,7 @@ def write_editorial_site() -> None:
     reset_dir(SITE2_ROOT)
     copy_editorial_assets(SITE2_ROOT)
     write_text(SITE2_ROOT / "assets" / "editorial-lab.css", EDITORIAL_LAB_CSS.strip() + "\n")
+    write_text(SITE2_ROOT / "assets" / "editorial-lab.js", LAB_JS.strip() + "\n")
     write_text(SITE2_ROOT / "index.html", build_editorial_home())
     write_text(SITE2_ROOT / "research.html", build_editorial_research_overview())
     write_text(SITE2_ROOT / "members.html", build_editorial_members())
